@@ -1,4 +1,4 @@
 rm -f *.class
-javac Test.java
+javac *.java
 java Test
 rm -f *.class

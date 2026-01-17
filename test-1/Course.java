@@ -64,7 +64,7 @@ abstract class CourseSessionInfo {
 
     public CourseSessionInfo(int sessionsPerWeek, double durations, int numberOfWeeks) {
         if ((durations * 100) % 25 != 0) {
-            throw new IllegalArgumentException("duration must be in 0.25 increments (e.g., 1.25, 1.5).");
+            throw new IllegalArgumentException("durations must be in 0.25 increments (e.g., 1.25, 1.5).");
         }
 
         if (numberOfWeeks < 12 || numberOfWeeks > 20) {
@@ -162,6 +162,14 @@ public class Course {
 
     public double getTotalHours() {
         return lectureInfo.getTotalHours() + practiceInfo.getTotalHours();
+    }
+
+    public double getTotalLectureHours() {
+        return lectureInfo.getTotalHours();
+    }
+
+    public double getTotalPracticeHours() {
+        return practiceInfo.getTotalHours();
     }
 
     public String getCourseID() {
