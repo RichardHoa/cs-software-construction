@@ -42,15 +42,14 @@ class CourseLoad {
     private final Map<Course, Grade> enrollments = new HashMap<>();
     private static final int MAX_COURSES = 6;
 
-    public CourseLoad() {
-    }
-
     public void addCourse(Course course, Grade grade) {
+        System.out.println("Course size: " + enrollments.size());
         if (enrollments.size() >= MAX_COURSES) {
             throw new IllegalStateException("Maximum course limit reached (6)");
+        } else {
+            enrollments.put(course, grade);
         }
 
-        enrollments.put(course, grade);
     }
 
     public Map<Course, Grade> getEnrollments() {
@@ -83,6 +82,7 @@ public class Student {
                 + "\n | Total lecture hours: " + course.getTotalLectureHours()
                 + "\n | Total practice hours: " + course.getTotalPracticeHours()
                 + "\n | Total hours: " + course.getTotalHours()
+                + "\n"
 
             );
         });
