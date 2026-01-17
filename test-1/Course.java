@@ -26,7 +26,8 @@ class CourseID {
         this.id = id;
     }
 
-    public String getValue() {
+    @Override
+    public String toString() {
         return this.id;
     }
 
@@ -38,18 +39,19 @@ class CourseName {
     public CourseName(String name) {
         int nameLength = name.length();
         if (nameLength < 3 || nameLength > 200) {
-            throw new IllegalArgumentException("Course name must be between 3 and 200 characters");
+            throw new IllegalArgumentException("name must be between 3 and 200 characters");
         }
 
         if (!name.matches("[a-zA-Z'\\\" ]+")) {
             throw new IllegalArgumentException(
-                    "Course name can only contain letters, single quotes, and double quotes");
+                    "name can only contain letters, single quotes, and double quotes");
         }
 
         this.name = name;
     }
 
-    public String getValue() {
+    @Override
+    public String toString() {
         return this.name;
     }
 
@@ -62,11 +64,11 @@ abstract class CourseSessionInfo {
 
     public CourseSessionInfo(int sessionsPerWeek, double durations, int numberOfWeeks) {
         if ((durations * 100) % 25 != 0) {
-            throw new IllegalArgumentException("Duration must be in 0.25 increments (e.g., 1.25, 1.5).");
+            throw new IllegalArgumentException("duration must be in 0.25 increments (e.g., 1.25, 1.5).");
         }
 
         if (numberOfWeeks < 12 || numberOfWeeks > 20) {
-            throw new IllegalArgumentException("Number of weeks must be between 12 and 20");
+            throw new IllegalArgumentException("numberOfWeeks must be between 12 and 20");
         }
 
         this.sessionsPerWeek = sessionsPerWeek;
@@ -77,6 +79,14 @@ abstract class CourseSessionInfo {
     public double getTotalHours() {
         return this.sessionsPerWeek * this.durations * this.numberOfWeeks;
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "Sessions/Week: %d | Duration: %.2f hrs | Weeks: %d | Sub-total: %.2f hrs",
+            sessionsPerWeek, durations, numberOfWeeks, getTotalHours()
+        );
+    }
 }
 
 class LectureSessionInfo extends CourseSessionInfo {
@@ -84,10 +94,10 @@ class LectureSessionInfo extends CourseSessionInfo {
         super(sessionsPerWeek, durations, numberOfWeeks);
         
         if (sessionsPerWeek != 1 && sessionsPerWeek != 2) {
-            throw new IllegalArgumentException("Lecture sessions per week must be 1 or 2");
+            throw new IllegalArgumentException("sessionsPerWeek must be 1 or 2");
         }
         if (durations != 1.5 && durations != 3.0) {
-            throw new IllegalArgumentException("Lecture durations must be 1.5 or 3.0");
+            throw new IllegalArgumentException("durations must be 1.5 or 3.0");
         }
     }
 }
@@ -97,10 +107,10 @@ class PracticeSessionInfo extends CourseSessionInfo {
         super(sessionsPerWeek, durations, numberOfWeeks);
 
         if (sessionsPerWeek < 1 || sessionsPerWeek > 3) {
-            throw new IllegalArgumentException("Practice sessions per week must be between 1 and 3");
+            throw new IllegalArgumentException("sessionsPerWeek must be between 1 and 3");
         }
         if (durations < 1.0 || durations > 3.0) {
-            throw new IllegalArgumentException("Practice durations must be between 1.0 and 3.0 hours");
+            throw new IllegalArgumentException("durations must be between 1.0 and 3.0 hours");
         }
     }
 }
@@ -147,7 +157,7 @@ public class Course {
     }
 
     public String getCourseName() {
-        return name.getValue();
+        return name.toString();
     }
 
     public double getTotalHours() {
@@ -155,7 +165,22 @@ public class Course {
     }
 
     public String getCourseID() {
-        return id.getValue();
+        return id.toString();
+    }
+
+
+    public void debug() {
+        System.out.println("\n======= [COURSE DEBUG START] =======");
+        System.out.println("COURSE ID:    " + id.toString());
+        System.out.println("COURSE NAME:  " + name.toString());
+        System.out.println("------------------------------------");
+        System.out.println("[LECTURE INFO]");
+        System.out.println("  " + lectureInfo.toString());
+        System.out.println("[PRACTICE INFO]");
+        System.out.println("  " + practiceInfo.toString());
+        System.out.println("------------------------------------");
+        System.out.printf("TOTAL CONTACT HOURS: %.2f hrs\n", getTotalHours());
+        System.out.println("======= [COURSE DEBUG END] =======\n");
     }
 
     
